@@ -1,4 +1,4 @@
-const ref = {}
+const ref = {};
 
 class AWSExportNames {
     constructor(serverless, options) {
@@ -6,18 +6,18 @@ class AWSExportNames {
         this.serverless = serverless;
         this.service = serverless.service;
         this.hooks = {
-            'aws:package:finalize:mergeCustomProviderResources': this.disableDefaultOutputExportNames.bind(this)
-        }
+            'before:deploy:deploy': this.disableDefaultOutputExportNames.bind(this)
+        };
     }
 
     disableDefaultOutputExportNames() {
-        const cfnTemplate = this.serverless.service.provider.compiledCloudFormationTemplate;
-        for (const [key, data] of Object.entries(cfnTemplate.Outputs)) {
+        const service = this.serverless.service;
+        for (const [key, data] of Object.entries(service.provider.compiledCloudFormationTemplate.Outputs)) {
             if (data.Export !== undefined) {
-                delete data.Export;
+                delete service.provider.compiledCloudFormationTemplate.Outputs[key].Export;
             }
         }
     }
 }
 
-module.exports = AWSExportNames
+module.exports = AWSExportNames;
