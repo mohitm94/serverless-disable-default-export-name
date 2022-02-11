@@ -22,4 +22,4 @@ class AWSExportNames {
     }
 }
 
-module.exports = DisableOutputs
+module.exports = AWSExportNames
